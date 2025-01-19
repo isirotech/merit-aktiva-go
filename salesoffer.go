@@ -91,7 +91,7 @@ func (query GetSalesOffersQuery) format() getSalesOffersQueryFormated {
 	}
 }
 
-func (c *Client) GetListOfSalesOffers(query GetSalesOffersQuery) ([]SalesOffer, error) {
+func (c *Client) GetSalesOffers(query GetSalesOffersQuery) ([]SalesOffer, error) {
 	queryFormated := query.format()
 	salesOffers := []SalesOffer{}
 	err := c.post(epGetListOfSalesOffers, queryFormated, &salesOffers)
