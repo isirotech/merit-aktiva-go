@@ -16,10 +16,12 @@ func TestGetSalesoffers(t *testing.T) {
 	salesOffers, err := testClient.GetSalesOffers(query)
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	j, err := json.MarshalIndent(salesOffers, "", "  ")
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	t.Log(string(j))
 }

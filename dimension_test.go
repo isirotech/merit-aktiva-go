@@ -12,10 +12,12 @@ func TestGetDimensions(t *testing.T) {
 	dimensions, err := testClient.GetDimensions(merit.Dimension{})
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	j, err := json.MarshalIndent(dimensions, "", "  ")
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	t.Log(string(j))
 }
@@ -27,10 +29,12 @@ func TestGetDimensionsByID(t *testing.T) {
 	})
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	j, err := json.MarshalIndent(dimensions, "", "  ")
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	t.Log(string(j))
 }
@@ -42,10 +46,12 @@ func TestGetDimensionsByCode(t *testing.T) {
 	})
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	j, err := json.MarshalIndent(dimensions, "", "  ")
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	t.Log(string(j))
 }

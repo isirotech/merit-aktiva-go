@@ -12,10 +12,12 @@ func TestGetItems(t *testing.T) {
 	items, err := testClient.GetItems(merit.GetItemsQuery{})
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	j, err := json.MarshalIndent(items, "", "  ")
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	t.Log(string(j))
 }
@@ -26,10 +28,12 @@ func TestGetItemsByCode(t *testing.T) {
 	})
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	j, err := json.MarshalIndent(items, "", "  ")
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	t.Log(string(j))
 }

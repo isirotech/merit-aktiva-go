@@ -12,10 +12,12 @@ func TestInventoryMovements(t *testing.T) {
 	inventoryMovements, err := testClient.GetInventoryMovements(merit.GetInventoryMovementsQuery{})
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	j, err := json.MarshalIndent(inventoryMovements, "", "  ")
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	t.Log(string(j))
 }
@@ -27,10 +29,12 @@ func TestInventoryMovementsLastWeek(t *testing.T) {
 	})
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	j, err := json.MarshalIndent(inventoryMovements, "", "  ")
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	t.Log(string(j))
 }
