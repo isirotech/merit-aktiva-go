@@ -28,8 +28,29 @@ const (
 	OfferStatusCanceled
 )
 
+func (s OfferStatus) String() string {
+	switch s {
+	case OfferStatusCreated:
+		return "Created"
+	case OfferStatusSent:
+		return "Sent"
+	case OfferStatusApproved:
+		return "Approved"
+	case OfferStatusRejected:
+		return "Rejected"
+	case OfferStatusCommentReceived:
+		return "Comment Received"
+	case OfferStatusInvoiceCreated:
+		return "Invoice Created"
+	case OfferStatusCanceled:
+		return "Canceled"
+	default:
+		return "Unknown"
+	}
+}
+
 type SalesOffer struct {
-	SIHId           string          `json:"SIHId"`
+	ID              string          `json:"SIHId"`
 	DepartmentName  string          `json:"DepartmentName"`
 	Dimension1Code  string          `json:"Dimension1Code"`
 	Dimension2Code  string          `json:"Dimension2Code"`
