@@ -12,7 +12,7 @@ func NewTestClient() *merit.Client {
 	logger, _ := zap.NewDevelopment()
 	defer logger.Sync()
 
-	err := godotenv.Load("../merit-main/.env")
+	err := godotenv.Load()
 	if err != nil {
 		logger.Fatal("Failed to load .env file", zap.Error(err))
 		return nil
