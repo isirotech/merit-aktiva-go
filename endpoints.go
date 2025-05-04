@@ -87,7 +87,7 @@ const (
 	// epGetDepartmentsList
 
 	// Unit of measure list
-	// epGetUnitOfMeasureList
+	epGetUnitOfMeasureList apiEndpoint = "v1/getunits"
 
 	// Banks list
 	// epGetBanksList
