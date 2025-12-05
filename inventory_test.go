@@ -1,15 +1,13 @@
-package merit_test
+package merit
 
 import (
 	"encoding/json"
 	"testing"
 	"time"
-
-	"github.com/egerong/merit-aktiva-go"
 )
 
 func TestInventoryMovements(t *testing.T) {
-	inventoryMovements, err := testClient.GetInventoryMovements(merit.GetInventoryMovementsQuery{})
+	inventoryMovements, err := testClient.GetInventoryMovements(GetInventoryMovementsQuery{})
 	if err != nil {
 		t.Error(err)
 		return
@@ -23,7 +21,7 @@ func TestInventoryMovements(t *testing.T) {
 }
 
 func TestInventoryMovementsLastWeek(t *testing.T) {
-	inventoryMovements, err := testClient.GetInventoryMovements(merit.GetInventoryMovementsQuery{
+	inventoryMovements, err := testClient.GetInventoryMovements(GetInventoryMovementsQuery{
 		PeriodStart: time.Now().AddDate(0, 0, -21),
 		PeriodEnd:   time.Now(),
 	})

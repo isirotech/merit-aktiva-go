@@ -1,15 +1,13 @@
-package merit_test
+package merit
 
 import (
 	"encoding/json"
 	"testing"
-
-	"github.com/egerong/merit-aktiva-go"
 )
 
 func TestGetItems(t *testing.T) {
 
-	items, err := testClient.GetItems(merit.GetItemsQuery{})
+	items, err := testClient.GetItems(GetItemsQuery{})
 	if err != nil {
 		t.Error(err)
 		return
@@ -23,7 +21,7 @@ func TestGetItems(t *testing.T) {
 }
 
 func TestGetItemsByCode(t *testing.T) {
-	items, err := testClient.GetItems(merit.GetItemsQuery{
+	items, err := testClient.GetItems(GetItemsQuery{
 		Code: "22% Kaup",
 	})
 	if err != nil {

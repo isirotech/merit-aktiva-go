@@ -1,4 +1,4 @@
-package merit_test
+package merit
 
 import (
 	"encoding/json"

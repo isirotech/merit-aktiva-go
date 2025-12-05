@@ -1,14 +1,12 @@
-package merit_test
+package merit
 
 import (
 	"encoding/json"
 	"testing"
-
-	"github.com/egerong/merit-aktiva-go"
 )
 
 func TestGetCustomers(t *testing.T) {
-	query := merit.GetCustomersQuery{}
+	query := GetCustomersQuery{}
 	customers, err := testClient.GetCustomers(query)
 	if err != nil {
 		t.Error(err)

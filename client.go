@@ -48,7 +48,7 @@ func (c *Client) signature(timestamp string, payload []byte) string {
 	mac.Write([]byte(timestamp))
 	mac.Write(payload)
 
-	return base64.URLEncoding.EncodeToString(mac.Sum(nil))
+	return base64.StdEncoding.EncodeToString(mac.Sum(nil))
 }
 
 // Send a HTTPS POST request with payload to the API

@@ -8,10 +8,13 @@ import (
 )
 
 type GetCustomersQuery struct {
-	ID       string `json:"Id,omitempty"`       // If filled, next fields will be ignored
-	RegNo    string `json:"RegNo,omitempty"`    // Exact match.
-	VatRegNo string `json:"VatRegNo,omitempty"` // Exact match.
-	Name     string `json:"Name,omitempty"`     // Broad match.
+	ID           string `json:"Id,omitempty"`       // If filled, next fields will be ignored
+	RegNo        string `json:"RegNo,omitempty"`    // Exact match.
+	VatRegNo     string `json:"VatRegNo,omitempty"` // Exact match.
+	Name         string `json:"Name,omitempty"`     // Broad match.
+	WithComments bool   `json:"WithComments"`
+	CommentsFrom string `json:"CommentsFrom,omitempty"`
+	ChangedDate  string `json:"ChangedDate,omitempty"`
 }
 
 func (c *Client) GetCustomers(query GetCustomersQuery) ([]Customer, error) {

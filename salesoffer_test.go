@@ -1,15 +1,13 @@
-package merit_test
+package merit
 
 import (
 	"encoding/json"
 	"testing"
 	"time"
-
-	"github.com/egerong/merit-aktiva-go"
 )
 
 func TestGetSalesoffers(t *testing.T) {
-	query := merit.GetSalesOffersQuery{
+	query := GetSalesOffersQuery{
 		PeriodStart: time.Now().AddDate(0, -1, 0),
 		PeriodEnd:   time.Now(),
 	}

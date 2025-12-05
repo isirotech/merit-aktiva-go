@@ -1,10 +1,8 @@
-package merit_test
+package merit
 
 import (
 	"encoding/json"
 	"testing"
-
-	"github.com/egerong/merit-aktiva-go"
 )
 
 func TestGetTaxes(t *testing.T) {
@@ -22,7 +20,7 @@ func TestGetTaxes(t *testing.T) {
 }
 
 func TestGetTaxByCode(t *testing.T) {
-	query := merit.Tax{
+	query := Tax{
 		Code: "22%",
 	}
 	tax, err := testClient.GetTaxes(&query)
