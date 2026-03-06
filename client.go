@@ -99,7 +99,7 @@ func (c *Client) post(endpoint apiEndpoint, payload interface{}, dest interface{
 	c.logger.Sugar().Debugf("Response body: %s", body.String())
 
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("API returned status code %d", resp.StatusCode)
+		return fmt.Errorf("API returned status code %d: %s", resp.StatusCode, body.String())
 	}
 
 	if dest != nil {
