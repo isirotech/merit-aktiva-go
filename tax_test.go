@@ -21,7 +21,7 @@ func TestGetTaxes(t *testing.T) {
 
 func TestGetTaxByCode(t *testing.T) {
 	query := Tax{
-		Code: "22%",
+		Name: "24% käibemaks",
 	}
 	tax, err := testClient.GetTaxes(&query)
 	if err != nil {
