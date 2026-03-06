@@ -212,3 +212,15 @@ func (c *Client) CreateSalesOffer(query CreateSalesOfferQuery) (*CreateSalesOffe
 	}
 	return &response, nil
 }
+
+// SetOfferStatusQuery is the payload for the v2/setofferstatus endpoint.
+type SetOfferStatusQuery struct {
+	ID        string      `json:"ID"`
+	NewStatus OfferStatus `json:"NewStatus"`
+	Comment   string      `json:"Comment,omitempty"` // Required if NewStatus == OfferStatusCommentReceived
+}
+
+// SetOfferStatus changes the status of an existing sales offer.
+func (c *Client) SetOfferStatus(query SetOfferStatusQuery) error {
+	return c.post(epSetOfferStatus, query, nil)
+}

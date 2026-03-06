@@ -13,7 +13,7 @@ const (
 	// Sales offers
 	epGetListOfSalesOffers apiEndpoint = "v2/getoffers"
 	epCreateSalesOffer     apiEndpoint = "v2/sendoffer"
-	// epSetOfferStatus
+	epSetOfferStatus       apiEndpoint = "v2/setofferstatus"
 	// epCreateInvoiceFromOffer
 	// epGetSalesOfferDetails
 	// epUpdateSalesOffer
@@ -98,7 +98,8 @@ const (
 	// Items
 	epGetItems      apiEndpoint = "v1/getitems"
 	epGetItemGroups apiEndpoint = "v2/getitemgroups"
-	// epAddItems
+	epSendItems     apiEndpoint = "v2/senditems"
+	// epAddItemGroups
 	// epAddItemGroups
 	// epUpdateItem
 
