@@ -1,4 +1,4 @@
-module github.com/egerong/merit-aktiva-go
+module github.com/isirotech/merit-aktiva-go
 
 go 1.23
 
