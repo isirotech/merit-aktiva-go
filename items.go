@@ -81,3 +81,53 @@ func (c *Client) GetItemGroups() ([]ItemGroup, error) {
 	fmt.Println(itemGroups)
 	return itemGroups, nil
 }
+
+// ItemUsage describes whether an item is used for sales, purchases, or both.
+type ItemUsage int
+
+const (
+	ItemUsageSales             ItemUsage = 1
+	ItemUsagePurchases         ItemUsage = 2
+	ItemUsageSalesAndPurchases ItemUsage = 3
+)
+
+// SendItemObject is the payload for a single item in a SendItems request.
+type SendItemObject struct {
+	Type             ItemType  `json:"Type"`        // Required. 1=stock item, 2=service, 3=item.
+	Usage            ItemUsage `json:"Usage"`       // Required. 1=sales, 2=purchases, 3=both.
+	Code             string    `json:"Code"`        // Required. Max 20 chars.
+	Description      string    `json:"Description"` // Required. Max 100 chars.
+	EANCode          string    `json:"EANCode,omitempty"`
+	UOMName          string    `json:"UOMName,omitempty"`         // Required for stock items.
+	DefLocationCode  string    `json:"DefLocationCode,omitempty"` // Required if multiple stocks.
+	DescriptionEN    string    `json:"DescriptionEN,omitempty"`
+	DescriptionRU    string    `json:"DescriptionRU,omitempty"`
+	DescriptionFI    string    `json:"DescriptionFI,omitempty"`
+	TaxId            guid.GUID `json:"TaxId,omitempty"`
+	ItemGrCode       string    `json:"ItemGrCode,omitempty"`
+	SalesAccCode     string    `json:"SalesAccCode,omitempty"`
+	PurchaseAccCode  string    `json:"PurchaseAccCode,omitempty"`
+	InventoryAccCode string    `json:"InventoryAccCode,omitempty"`
+	CostAccCode      string    `json:"CostAccCode,omitempty"`
+}
+
+// SendItemResult is the per-item response from the v2/senditems endpoint.
+type SendItemResult struct {
+	ItemId guid.GUID `json:"ItemId"`
+	Code   string    `json:"Code"`
+}
+
+// SendItemsQuery is the request payload for the v2/senditems endpoint.
+type SendItemsQuery struct {
+	Items []SendItemObject `json:"Items"`
+}
+
+// SendItems creates or updates inventory items in Merit.
+func (c *Client) SendItems(query SendItemsQuery) ([]SendItemResult, error) {
+	results := []SendItemResult{}
+	err := c.post(epSendItems, query, &results)
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
+}
