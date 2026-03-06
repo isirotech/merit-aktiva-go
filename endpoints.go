@@ -1,13 +1,8 @@
 package merit
 
-import "log"
-
-const apiPath = "api/"
-
-type apiEndpoint int
+type apiEndpoint string
 
 const (
-	_ apiEndpoint = iota
 
 	// Sales invoices
 	// epGetListOfSalesInvoices apiEndpoint = iota
@@ -16,10 +11,12 @@ const (
 	// epCreateSalesInvoice
 
 	// Sales offers
-	// epGetListOfSalesOffers
-	// epCreateSalesOffer
+	epGetListOfSalesOffers apiEndpoint = "v2/getoffers"
+	epCreateSalesOffer     apiEndpoint = "v2/sendoffer"
 	// epSetOfferStatus
 	// epCreateInvoiceFromOffer
+	// epGetSalesOfferDetails
+	// epUpdateSalesOffer
 
 	// Get price
 	// epGetPrice
@@ -38,7 +35,8 @@ const (
 	// epCreatePurchaseInvoice
 
 	// Inventory movements
-	epGetListOfLocations
+	epGetListOfLocations          apiEndpoint = "v2/getlocations"
+	epGetListOfInventoryMovements apiEndpoint = "v2/getinvmovements"
 	// epCreateInventoryMovement
 
 	// Payments
@@ -56,13 +54,13 @@ const (
 	// epGetGeneralLedgerTransactionFullDetails
 
 	// Tax list
-	// epGetTaxList
+	epGetListOfTaxes apiEndpoint = "v1/gettaxes"
 
 	// Send tax
 	// epSendTax
 
 	// Customers
-	// epGetListOfCustomers
+	epGetListOfCustomers apiEndpoint = "v1/getcustomers"
 	// epCreateCustomer
 	// epUpdateCustomer
 
@@ -81,7 +79,7 @@ const (
 	// epGetCostCentersList
 
 	// Dimensions
-	// epGetDimensionsList
+	epGetListOfDimensions apiEndpoint = "v2/getdimensions"
 	// epCreateDimensions
 	// epAddDimensionValues
 
@@ -89,7 +87,7 @@ const (
 	// epGetDepartmentsList
 
 	// Unit of measure list
-	// epGetUnitOfMeasureList
+	epGetUnitOfMeasureList apiEndpoint = "v1/getunits"
 
 	// Banks list
 	// epGetBanksList
@@ -98,56 +96,18 @@ const (
 	// epGetFinancialYearsList
 
 	// Items
-	epGetItems
-	epGetItemGroups
-	epAddItems
-	epAddItemGroups
-	epUpdateItem
+	epGetItems      apiEndpoint = "v1/getitems"
+	epGetItemGroups apiEndpoint = "v2/getitemgroups"
+	// epAddItems
+	// epAddItemGroups
+	// epUpdateItem
 
 	// Reports
 	// epCustomerDebtsReport
 	// epCustomerPaymentReport
 	// epStatementOfProfitOrLoss
 	// epStatementOfFinancialPosition
-	epInventoryReport
+	epGetInventoryReport apiEndpoint = "v2/getinventoryreport"
 	// epSalesReport
-	// epPurchaseReport
+	epGetPurchaseReport apiEndpoint = "v2/getpurchrep"
 )
-
-var endpointMap = map[apiEndpoint]string{
-	// Sales invoices
-	// Sales offers
-	// Get price
-	// Recurring Invoices
-	// Purchase invoices
-	// Inventory movements
-	epGetListOfLocations: "v2/getlocations",
-	// Payments
-	// General ledger transactions
-	// Tax list
-	// Send tax
-	// Customers
-	// Vendors
-	// Accounts list
-	// Project List
-	// Cost centers list
-	// Dimensions
-	// Departments List
-	// Unit of measure list
-	// Banks list
-	// Financial years
-	// Items
-	epGetItems:      "v1/getitems",
-	epGetItemGroups: "v2/getitemgroups",
-	// Reports
-	epInventoryReport: "v2/getinventoryreport",
-}
-
-func (e apiEndpoint) String() string {
-	epStr, ok := endpointMap[e]
-	if !ok {
-		log.Fatalf("Unknown endpoint: %d", e)
-	}
-
-	return apiPath + epStr
-}

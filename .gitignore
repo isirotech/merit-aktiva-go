@@ -16,3 +16,5 @@
 
 # Debug files
 __debug_bin
+
+.env

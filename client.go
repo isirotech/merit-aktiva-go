@@ -5,12 +5,12 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
 	"time"
 
+	"github.com/go-json-experiment/json"
 	"go.uber.org/zap"
 )
 
@@ -19,6 +19,7 @@ type API_HOST string
 const (
 	API_HOST_EST API_HOST = "aktiva.merit.ee"
 	API_HOST_FIN API_HOST = "aktiva.meritaktiva.fi"
+	apiPath      string   = "api/"
 )
 
 type Client struct {
@@ -47,7 +48,7 @@ func (c *Client) signature(timestamp string, payload []byte) string {
 	mac.Write([]byte(timestamp))
 	mac.Write(payload)
 
-	return base64.URLEncoding.EncodeToString(mac.Sum(nil))
+	return base64.StdEncoding.EncodeToString(mac.Sum(nil))
 }
 
 // Send a HTTPS POST request with payload to the API
@@ -70,7 +71,7 @@ func (c *Client) post(endpoint apiEndpoint, payload interface{}, dest interface{
 	perform := url.URL{
 		Scheme:   "https",
 		Host:     string(c.apiHost),
-		Path:     endpoint.String(),
+		Path:     apiPath + string(endpoint),
 		RawQuery: v.Encode(),
 	}
 
@@ -90,19 +91,20 @@ func (c *Client) post(endpoint apiEndpoint, payload interface{}, dest interface{
 	}
 	defer resp.Body.Close()
 
+	body := &bytes.Buffer{}
+	_, err = body.ReadFrom(resp.Body)
+	if err != nil {
+		return err
+	}
+	c.logger.Sugar().Debugf("Response body: %s", body.String())
+
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("API returned status code %d", resp.StatusCode)
 	}
 
 	if dest != nil {
-		body := &bytes.Buffer{}
-		_, err = body.ReadFrom(resp.Body)
+		err = json.Unmarshal(body.Bytes(), dest)
 		if err != nil {
-			return err
-		}
-		c.logger.Sugar().Debugf("Response body: %s", body.String())
-
-		if err = json.NewDecoder(body).Decode(&dest); err != nil {
 			return err
 		}
 	}
