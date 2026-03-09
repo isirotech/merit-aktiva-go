@@ -10,11 +10,14 @@ const (
 	// epDeleteInvoice
 	// epCreateSalesInvoice
 
+	// Sales invoices — send
+	epSendInvoiceAsEInv apiEndpoint = "v2/sendinvoiceaseinv"
+
 	// Sales offers
-	epGetListOfSalesOffers apiEndpoint = "v2/getoffers"
-	epCreateSalesOffer     apiEndpoint = "v2/sendoffer"
-	epSetOfferStatus       apiEndpoint = "v2/setofferstatus"
-	// epCreateInvoiceFromOffer
+	epGetListOfSalesOffers   apiEndpoint = "v2/getoffers"
+	epCreateSalesOffer       apiEndpoint = "v2/sendoffer"
+	epSetOfferStatus         apiEndpoint = "v2/setofferstatus"
+	epCreateInvoiceFromOffer apiEndpoint = "v2/offer2inv"
 	// epGetSalesOfferDetails
 	// epUpdateSalesOffer
 

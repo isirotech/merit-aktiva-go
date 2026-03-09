@@ -224,3 +224,27 @@ type SetOfferStatusQuery struct {
 func (c *Client) SetOfferStatus(query SetOfferStatusQuery) error {
 	return c.post(epSetOfferStatus, query, nil)
 }
+
+// CreateInvoiceFromOfferQuery is the request payload for the v2/offer2inv endpoint.
+type CreateInvoiceFromOfferQuery struct {
+	ID string `json:"Id"`
+}
+
+// CreateInvoiceFromOfferResponse is the response from the v2/offer2inv endpoint.
+type CreateInvoiceFromOfferResponse struct {
+	CustomerID  guid.GUID `json:"CustomerId"`
+	InvoiceID   guid.GUID `json:"InvoiceId"`
+	InvoiceNo   string    `json:"InvoiceNo"`
+	RefNo       string    `json:"RefNo"`
+	NewCustomer bool      `json:"NewCustomer"`
+}
+
+// CreateInvoiceFromOffer creates a sales invoice from an existing offer.
+func (c *Client) CreateInvoiceFromOffer(query CreateInvoiceFromOfferQuery) (*CreateInvoiceFromOfferResponse, error) {
+	var response CreateInvoiceFromOfferResponse
+	err := c.post(epCreateInvoiceFromOffer, query, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, nil
+}

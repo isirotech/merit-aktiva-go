@@ -112,3 +112,52 @@ func (c *Client) post(endpoint apiEndpoint, payload interface{}, dest interface{
 	return nil
 
 }
+
+// postRaw sends a POST request and returns the raw response body without JSON decoding.
+// Use for endpoints that return plain strings (e.g. "OK", "api-noeinv").
+// Returns the HTTP status code, the body, and an error only for transport failures.
+func (c *Client) postRaw(endpoint apiEndpoint, payload interface{}) (int, []byte, error) {
+	jsonPayload, err := json.Marshal(payload)
+	if err != nil {
+		return 0, nil, err
+	}
+	c.logger.Sugar().Debugf("Request body: %s", string(jsonPayload))
+	timestamp := time.Now().UTC().Format("20060102150405")
+	signature := c.signature(timestamp, jsonPayload)
+
+	v := url.Values{}
+	v.Set("ApiId", c.apiID)
+	v.Set("timestamp", timestamp)
+	v.Set("signature", signature)
+
+	perform := url.URL{
+		Scheme:   "https",
+		Host:     string(c.apiHost),
+		Path:     apiPath + string(endpoint),
+		RawQuery: v.Encode(),
+	}
+
+	c.logger.Sugar().Debugf("Performing request to %s", perform.String())
+
+	req, err := http.NewRequest("POST", perform.String(), bytes.NewBuffer(jsonPayload))
+	if err != nil {
+		return 0, nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return 0, nil, err
+	}
+	defer resp.Body.Close()
+
+	body := &bytes.Buffer{}
+	_, err = body.ReadFrom(resp.Body)
+	if err != nil {
+		return 0, nil, err
+	}
+	c.logger.Sugar().Debugf("Response status: %d, body: %s", resp.StatusCode, body.String())
+
+	return resp.StatusCode, body.Bytes(), nil
+}
