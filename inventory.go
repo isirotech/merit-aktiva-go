@@ -2,6 +2,14 @@ package merit
 
 import "time"
 
+type InventoryMovementType int
+
+const (
+	InventoryMovementTypeIn      InventoryMovementType = 1
+	InventoryMovementTypeOut     InventoryMovementType = 2
+	InventoryMovementTypeBetween InventoryMovementType = 3
+)
+
 type Location struct {
 	CompanyID     int    `json:"CompanyId"`
 	LocationID    string `json:"LocationId"`
@@ -131,4 +139,50 @@ func (c *Client) GetInventoryMovements(query GetInventoryMovementsQuery) ([]Inve
 		return nil, err
 	}
 	return inventoryMovements, nil
+}
+
+type SendInventoryMovementQuery struct {
+	DocDate        time.Time             `json:"DocDate"`
+	DocNo          string                `json:"DocNo,omitempty"`
+	Location1Code  string                `json:"Location1Code,omitempty"`
+	Location2Code  string                `json:"Location2Code,omitempty"`
+	DepartmentCode string                `json:"DepartmentCode,omitempty"`
+	Type           InventoryMovementType `json:"Type"`
+	Rows           []SendInventoryRow    `json:"Rows"`
+	Dimensions     []DimensionsObject    `json:"Dimensions,omitempty"`
+}
+
+type sendInventoryMovementQueryFormated struct {
+	DocDate        queryDate             `json:"DocDate"`
+	DocNo          string                `json:"DocNo,omitempty"`
+	Location1Code  string                `json:"Location1Code,omitempty"`
+	Location2Code  string                `json:"Location2Code,omitempty"`
+	DepartmentCode string                `json:"DepartmentCode,omitempty"`
+	Type           InventoryMovementType `json:"Type"`
+	Rows           []SendInventoryRow    `json:"Rows"`
+	Dimensions     []DimensionsObject    `json:"Dimensions,omitempty"`
+}
+
+type SendInventoryRow struct {
+	ArticleCode   string             `json:"ArticleCode"`
+	UOMName       string             `json:"UOMName,omitempty"`
+	ItemUnitCost  float64            `json:"ItemUnitCost,omitempty"`
+	Quantity      float64            `json:"Quantity"`
+	GLAccountCode string             `json:"GLAccountCode,omitempty"`
+	Dimensions    []DimensionsObject `json:"Dimensions,omitempty"`
+}
+
+func (c *Client) SendInventoryMovement(query SendInventoryMovementQuery) error {
+	queryFormated := sendInventoryMovementQueryFormated{
+		DocDate:        queryDate{query.DocDate, "20060102"},
+		DocNo:          query.DocNo,
+		Location1Code:  query.Location1Code,
+		Location2Code:  query.Location2Code,
+		DepartmentCode: query.DepartmentCode,
+		Type:           query.Type,
+		Rows:           query.Rows,
+		Dimensions:     query.Dimensions,
+	}
+
+	return c.post(epSendInventoryMovement, queryFormated, nil)
 }

@@ -5,8 +5,9 @@ type apiEndpoint string
 const (
 
 	// Sales invoices
-	// epGetListOfSalesInvoices apiEndpoint = iota
-	// epGetSalesInvoiceDetails
+	epGetSalesInvoicesByPeriod apiEndpoint = "v2/getinvoices"
+	epGetSalesInvoicesByNumber apiEndpoint = "v2/getinvoices2"
+	epGetSalesInvoiceDetails   apiEndpoint = "v2/getinvoice"
 	// epDeleteInvoice
 	// epCreateSalesInvoice
 
@@ -40,7 +41,7 @@ const (
 	// Inventory movements
 	epGetListOfLocations          apiEndpoint = "v2/getlocations"
 	epGetListOfInventoryMovements apiEndpoint = "v2/getinvmovements"
-	// epCreateInventoryMovement
+	epSendInventoryMovement       apiEndpoint = "v2/SendInvMovement"
 
 	// Payments
 	// epGetListOfPayments
@@ -102,9 +103,9 @@ const (
 	epGetItems      apiEndpoint = "v1/getitems"
 	epGetItemGroups apiEndpoint = "v2/getitemgroups"
 	epSendItems     apiEndpoint = "v2/senditems"
+	epUpdateItem    apiEndpoint = "v1/updateitem"
 	// epAddItemGroups
 	// epAddItemGroups
-	// epUpdateItem
 
 	// Reports
 	// epCustomerDebtsReport

@@ -1,8 +1,6 @@
 package merit
 
 import (
-	"fmt"
-
 	"github.com/Microsoft/go-winio/pkg/guid"
 	"github.com/shopspring/decimal"
 )
@@ -44,6 +42,7 @@ type Item struct {
 	ItemUnitCost         decimal.Decimal `json:"ItemUnitCost"`
 	InventoryCost        decimal.Decimal `json:"InventoryCost"`
 	ItemGroupName        string          `json:"ItemGroupName"`
+	DefLocationCode      string          `json:"DefLocationCode"`
 	DefLocName           string          `json:"DefLoc_Name"`
 	EANCode              string          `json:"EANCode"`
 }
@@ -61,7 +60,6 @@ func (c *Client) GetItems(query GetItemsQuery) ([]Item, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(items)
 	return items, nil
 }
 
@@ -77,8 +75,6 @@ func (c *Client) GetItemGroups() ([]ItemGroup, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(itemGroups)
 	return itemGroups, nil
 }
 
@@ -97,6 +93,7 @@ type SendItemObject struct {
 	Usage            ItemUsage `json:"Usage"`       // Required. 1=sales, 2=purchases, 3=both.
 	Code             string    `json:"Code"`        // Required. Max 20 chars.
 	Description      string    `json:"Description"` // Required. Max 100 chars.
+	NonActive        bool      `json:"NonActive,omitempty"`
 	EANCode          string    `json:"EANCode,omitempty"`
 	UOMName          string    `json:"UOMName,omitempty"`         // Required for stock items.
 	DefLocationCode  string    `json:"DefLocationCode,omitempty"` // Required if multiple stocks.
@@ -130,4 +127,22 @@ func (c *Client) SendItems(query SendItemsQuery) ([]SendItemResult, error) {
 		return nil, err
 	}
 	return results, nil
+}
+
+// UpdateItemQuery is the request payload for the v1/updateitem endpoint.
+type UpdateItemQuery struct {
+	ID                   guid.GUID `json:"Id"`
+	Code                 string    `json:"Code,omitempty"`
+	Description          string    `json:"Description,omitempty"`
+	NonActive            bool      `json:"NonActive,omitempty"`
+	EANCode              string    `json:"EANCode,omitempty"`
+	SalesAccountCode     string    `json:"SalesAccountCode,omitempty"`
+	PurchaseAccountCode  string    `json:"PurchaseAccountCode,omitempty"`
+	InventoryAccountCode string    `json:"InventoryAccountCode,omitempty"`
+	ItemCostAccountCode  string    `json:"ItemCostAccountCode,omitempty"`
+}
+
+// UpdateItem updates an existing inventory item in Merit.
+func (c *Client) UpdateItem(query UpdateItemQuery) error {
+	return c.post(epUpdateItem, query, nil)
 }

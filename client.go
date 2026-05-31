@@ -23,10 +23,11 @@ const (
 )
 
 type Client struct {
-	apiID   string
-	apiKey  string
-	apiHost API_HOST
-	logger  *zap.Logger
+	apiID      string
+	apiKey     string
+	apiHost    API_HOST
+	logger     *zap.Logger
+	httpClient *http.Client
 }
 
 func NewClient(apiID, apiKey string, apiHost API_HOST, logger *zap.Logger) *Client {
@@ -34,10 +35,11 @@ func NewClient(apiID, apiKey string, apiHost API_HOST, logger *zap.Logger) *Clie
 		logger = zap.NewNop()
 	}
 	return &Client{
-		apiID:   apiID,
-		apiKey:  apiKey,
-		apiHost: apiHost,
-		logger:  logger,
+		apiID:      apiID,
+		apiKey:     apiKey,
+		apiHost:    apiHost,
+		logger:     logger,
+		httpClient: &http.Client{},
 	}
 }
 
@@ -84,8 +86,12 @@ func (c *Client) post(endpoint apiEndpoint, payload interface{}, dest interface{
 
 	req.Header.Set("Content-Type", "application/json")
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	httpClient := c.httpClient
+	if httpClient == nil {
+		httpClient = &http.Client{}
+	}
+
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return err
 	}
@@ -145,8 +151,12 @@ func (c *Client) postRaw(endpoint apiEndpoint, payload interface{}) (int, []byte
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	httpClient := c.httpClient
+	if httpClient == nil {
+		httpClient = &http.Client{}
+	}
+
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return 0, nil, err
 	}
